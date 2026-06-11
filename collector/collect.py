@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime
-from config import TOMTOM_API_KEY,CORRIDORS
+from collector.config import TOMTOM_API_KEY,CORRIDORS
 import csv
 import os
 import time
