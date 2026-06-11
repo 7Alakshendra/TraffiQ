@@ -1,5 +1,7 @@
 pandas
 numpy
-matplotlib.pyplot
+matplotlib
 fastapi[standard]
 requests
+python-dotenv
+scikit-learn
