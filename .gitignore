@@ -12,7 +12,8 @@ __pycache__/
 model/saved_model/
 
 # Data
-data/
+data/raw/*.csv
+!data/raw/traffic_readings.csv
 
 # Node / React
 frontend/node_modules/

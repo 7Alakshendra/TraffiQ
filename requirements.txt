@@ -2,3 +2,4 @@ pandas
 numpy
 matplotlib.pyplot
 fastapi[standard]
+requests
