@@ -34,3 +34,8 @@ timestamp,corridor,current_speed,free_flow_speed,travel_time,confidence,congesti
 2026-06-11 22:30:13.952286,Hebbal Flyover,47,47,396,1,0.0
 2026-06-11 22:30:14.095352,Marathalli Brg,40,40,349,1,0.0
 2026-06-11 22:30:14.205073,Tin Factory,26,26,154,1,0.0
+2026-06-12 00:04:53.392908,Silk Board,24,24,18,1,0.0
+2026-06-12 00:04:53.465646,MG Road,28,28,1247,1,0.0
+2026-06-12 00:04:53.526502,Hebbal Flyover,47,47,396,1,0.0
+2026-06-12 00:04:53.583609,Marathalli Brg,40,40,349,1,0.0
+2026-06-12 00:04:53.643309,Tin Factory,26,26,154,1,0.0
