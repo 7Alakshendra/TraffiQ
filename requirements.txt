@@ -5,3 +5,5 @@ fastapi[standard]
 requests
 python-dotenv
 scikit-learn
+ultralytics
+opencv-python
