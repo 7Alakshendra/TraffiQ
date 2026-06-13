@@ -15,6 +15,12 @@ model/saved_model/
 data/raw/*.csv
 !data/raw/traffic_readings.csv
 
+# Data for Cv
+*.pt
+cv/test_data/*
+!cv/test_data/.gitkeep
+
+
 # Node / React
 frontend/node_modules/
 frontend/dist/
