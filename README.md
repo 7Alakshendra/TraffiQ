@@ -1,9 +1,11 @@
-TraffiQ
+## TraffiQ
 AI-powered traffic intelligence platform for Indian cities — built for both daily commuters and traffic authorities.
-For Citizens
+
+## For Citizens
 
 TraffiQ predicts traffic conditions 30–90 minutes ahead so commuters can plan their departure time before stepping out. Unlike real-time navigation apps, TraffiQ tells you the best time to leave — not just how bad it is right now.
-For Traffic Authorities
+
+## For Traffic Authorities
 
 An AI agent monitors live CCTV footage across the city in real time — detecting traffic violations (red light jumping, wrong-side driving, speeding), identifying congestion hotspots, and flagging emergencies. Authorities get an intelligent dashboard that surfaces exactly where intervention is needed, without manually watching hundreds of camera feeds.
 How it works
