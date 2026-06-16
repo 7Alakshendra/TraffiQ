@@ -2,28 +2,31 @@ from ultralytics import YOLO
 import cv2
 
 # Load a model
-model = YOLO("yolov8s.pt")  
+model = YOLO("yolo26s.pt")  
 
 def process_video(video):
     cap = cv2.VideoCapture(video)
     i = 0
-    sample_every = 10  # process every 10th frame
-    densities = []
-    
+    densities = []  
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    print(int(fps))
+# Define how many seconds to skip
+    frames_per_sample = int(5*fps)
+   
     while cap.isOpened():
+        
         ret, frame = cap.read()  
         if not ret:
             break
-        if i % sample_every == 0:
+        if i % frames_per_sample == 0:
             density = get_density(frame)
             densities.append(density)
-            print(f"Frame {i}: {density}")
+            print(f"second{i//int(fps)}: {density}")
         i += 1  
 
     cap.release()
     return densities
-
-    
+   
 
 def get_density(frame):
     results = model(frame,stream=False)  
