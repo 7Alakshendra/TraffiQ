@@ -44,6 +44,18 @@ def get_density(frame):
         density="High"
     return density
 
+def check_alert(densities):
+    if len(densities)<60:
+        return "Insufficient Data"
+    
+    if len(densities)>=60 and all(d=="High" for d in densities[-60:]):
+        return "Heavy Congestion. Attention Required!"
+    
+    return"Normal Traffic"
+
+
 if __name__ == "__main__":
-    densities = process_video("test_data/video.mp4")
-    print(densities)
+    densities = process_video("test_data/traffic_video.mp4")
+    alert = check_alert(densities)
+
+    print(f"Traffic Condition:{alert}")
