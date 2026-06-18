@@ -10,6 +10,7 @@ def get_traffic_data(lat,lon):
     response = requests.get(URL)
     data=response.json()
     return data
+
 def save_to_csv(corridor_name, data, timestamp):
     segment = data['flowSegmentData']
     
