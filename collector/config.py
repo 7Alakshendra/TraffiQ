@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOMTOM_API_KEY = os.getenv("TOMTOM_API_KEY")
+OPEN_WEATHER_MAP_API_KEY=os.getenv("OPEN_WEATHER_MAP_API_KEY")
+
 
 CORRIDORS=[{"name":"Silk Board","lat":12.9166968756781,"lon": 77.62332905126449},
              {"name":"MG Road","lat":12.974918739626172,"lon": 77.6095028008516},

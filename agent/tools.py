@@ -1,5 +1,6 @@
 from collector.collect import get_traffic_data
-from collector.config import CORRIDORS, TOMTOM_API_KEY
+from collector.config import CORRIDORS, TOMTOM_API_KEY,OPEN_WEATHER_MAP_API_KEY
+import requests
 
 def get_corridor_density(corridor_name):
     # find the corridor dictionary that matches the name
@@ -39,5 +40,17 @@ def get_all_corridors():
         results[name] = get_corridor_density(name)
     return results
 
+def get_weather(corridor_name):
+    corridor = next((c for c in CORRIDORS if c["name"] == corridor_name), None)
+    lat,lon=corridor['lat'],corridor['lon']
+    URL=f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPEN_WEATHER_MAP_API_KEY}&units=metric"
+    response=requests.get(URL)
+    data = response.json()
+    return {
+    "description": data['weather'][0]['description'],
+    "temp": data['main']['temp'],
+    "visibility": data.get('visibility', 'N/A')}
+
+
 if __name__ == "__main__":
-    print(get_all_corridors())
+    print(get_weather("Silk Board"))
