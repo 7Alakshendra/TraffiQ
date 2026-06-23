@@ -1,6 +1,9 @@
 from collector.collect import get_traffic_data
 from collector.config import CORRIDORS, TOMTOM_API_KEY,OPEN_WEATHER_MAP_API_KEY
 import requests
+import pandas as pd
+import datetime
+import os
 
 def get_corridor_density(corridor_name):
     # find the corridor dictionary that matches the name
@@ -51,6 +54,30 @@ def get_weather(corridor_name):
     "temp": data['main']['temp'],
     "visibility": data.get('visibility', 'N/A')}
 
+def get_historical_pattern(corridor_name):
+    BASE_DIR = os.path.dirname(__file__)
+    csv_path = os.path.join(BASE_DIR, '..', 'data', 'raw', 'traffic_readings.csv')
+    df = pd.read_csv(csv_path)
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    df['hour'] = df['timestamp'].dt.hour
+    df['day_of_week'] = df['timestamp'].dt.dayofweek
+
+    present_moment=datetime.datetime.now()
+    current_hour=present_moment.hour
+    current_day=present_moment.weekday()
+    filtered = df[
+    (df["corridor"] == corridor_name) &
+    (df["hour"].between(current_hour - 1, current_hour + 1))]
+
+    if len(filtered) == 0:
+        return {"pattern": "No historical data available"}
+    
+    return {
+        "corridor": corridor_name,
+        "avg_congestion": round(filtered['congestion'].mean(), 2),
+        "avg_speed": round(filtered['current_speed'].mean(), 2),
+        "sample_size": len(filtered)
+    }
 
 if __name__ == "__main__":
-    print(get_weather("Silk Board"))
+    print(get_historical_pattern("MG Road"))
