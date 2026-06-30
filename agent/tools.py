@@ -4,8 +4,10 @@ import requests
 import pandas as pd
 import datetime
 import os
+from cv.model import process_video,check_alert
+import sys
 
-
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 def get_corridor_density(corridor_name:str):
     """Get real-time traffic density for a specific Bengaluru corridor.
@@ -101,3 +103,39 @@ def get_historical_pattern(corridor_name:str):
         "sample_size": len(filtered)
     }
    
+def analyze_camera_feed(video_path:str,corridor_name:str):
+    """"Analyze a traffic camera feed video to detect vehicle density and congestion.
+    Use this when you need visual confirmation of traffic conditions at a specific location.
+    Returns density readings per time interval and overall alert status.
+    corridor_name must be one of: Silk Board, MG Road, Hebbal Flyover, Marathalli Brg, Tin Factory"""
+    
+    densities=process_video(video_path)
+    alert=check_alert(densities)
+    most_common_density=max(densities,key=densities.count)
+
+    return {
+    "video_path": video_path,
+    "corridor": corridor_name,
+    "density_readings": densities,
+    "alert_status": alert,
+    "dominant_density": most_common_density
+}
+def compare_cv_and_tomtom(cv_density: str, tomtom_status: str) -> dict:
+    """Compare CV-derived density with TomTom congestion status to check for agreement.
+    Returns whether they agree and a confidence note."""
+    
+    agreement_map = {
+        ("Light", "Low"): True,
+        ("Moderate", "Moderate"): True,
+        ("High", "High"): True,
+    }
+    
+    matches = agreement_map.get((cv_density, tomtom_status), False)
+    
+    return {
+        "cv_density": cv_density,
+        "tomtom_status": tomtom_status,
+        "agree": matches,
+        "note": "Verified by code logic, not LLM inference" if matches else "Discrepancy detected — investigate further"
+    }
+    
