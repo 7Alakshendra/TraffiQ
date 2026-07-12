@@ -29,7 +29,7 @@ function Login() {
                     placeholder="Enter Your Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-md border border-[#f1faee] p-2 text-sm text-[#f8edeb] placeholder-[#a8dadc] focus:outline-sky-500 dark:bg-[#f4f1de] dark:text-white dark:border-slate-600 dark:placeholder-[#606c38]"
+                    className="w-full rounded-md border border-[#f1faee] p-2 text-sm text-white bg-gray-800 placeholder-gray-400 focus:outline-sky-500"
                 />
 
                 <input
@@ -37,7 +37,7 @@ function Login() {
                     placeholder="Enter Your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-md border border-[#f1faee] p-2 text-sm text-[#f8edeb] placeholder-[#a8dadc] focus:outline-sky-500 dark:bg-[#f4f1de] dark:text-white dark:border-slate-600 dark:placeholder-[#606c38]"
+                    className="w-full rounded-md border border-[#f1faee] p-2 text-sm text-white bg-gray-800 placeholder-gray-400 focus:outline-sky-500"
                 />
 
                 <button

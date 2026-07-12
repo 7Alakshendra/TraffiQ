@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
+import Navbar from "./components/Navbar"
+import CameraMonitor from "./pages/CameraMonitor"
+import Alerts from "./pages/Alerts"
+
 
 function App() {
   return (
@@ -8,7 +12,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard/>}/>
+      <Route path="/dashboard" element={<><Navbar /><Dashboard /></>}/>
+      <Route path="/dashboard" element={<><Navbar /><CameraMonitor /></>}/>
+      <Route path="/dashboard" element={<><Navbar /><Alerts /></>}/>
+
     </Routes>
     </BrowserRouter>
   );
