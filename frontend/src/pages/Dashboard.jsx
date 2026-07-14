@@ -85,7 +85,7 @@ function Dashboard() {
 
         {/* Agent recommendation */}
         <div className="bg-gray-800 rounded-lg p-4 border border-blue-900">
-          <h2 className="text-white font-semibold mb-4">🤖 Agent Recommendation</h2>
+          <h2 className="text-white font-semibold mb-4"> Agent Recommendation</h2>
           <p className="text-gray-300 text-sm leading-relaxed">{agentRecommendation}</p>
         </div>
 

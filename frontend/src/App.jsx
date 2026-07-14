@@ -13,9 +13,9 @@ function App() {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<><Navbar /><Dashboard /></>}/>
-      <Route path="/dashboard" element={<><Navbar /><CameraMonitor /></>}/>
-      <Route path="/dashboard" element={<><Navbar /><Alerts /></>}/>
-
+      <Route path="/cameras" element={<><Navbar /><CameraMonitor /></>}/>
+      <Route path="/alerts" element={<><Navbar /><Alerts /></>}/>
+      
     </Routes>
     </BrowserRouter>
   );
