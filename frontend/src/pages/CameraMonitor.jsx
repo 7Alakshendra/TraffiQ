@@ -1,4 +1,15 @@
+import {useState , useEffect} from "react"
+
 function CameraMonitor() {
+// 1. state to hold the fetched data
+  const [cvResult, setCvResult] = useState(null)
+
+  // 2. fetch data when page loads
+  useEffect(() => {
+    fetch("http://localhost:8000/analyze-frame")
+      .then(res => res.json())       // convert response to JavaScript object
+      .then(data => setCvResult(data)) // store in state
+  }, [])
 
 const corridors = [
     { name: "Silk Board", status: "High", congestion: 78, speed: 12 },
@@ -21,7 +32,7 @@ const corridors = [
       
       {/* Video */}
       <video className="w-full rounded" autoPlay muted loop>
-        <source src="/traffic_video.mp4" type="video/mp4" />
+        <source src="/annotated.mp4" type="video/mp4" />
       </video>
       
       {/* Status badge */}
@@ -32,7 +43,13 @@ const corridors = [
       }>
         {corridor.status === "High" ? "🔴" : corridor.status === "Moderate" ? "🟡" : "🟢"} {corridor.status}
       </p>
-
+      <div>
+      {cvResult ? (
+        <p>Density: {cvResult.density}</p>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
     </div>
   ))}
 </div>

@@ -33,4 +33,7 @@ frontend/build/
 .DS_Store
 Thumbs.db
 
+annotated.mp4
+cv/output/
 frontend/public/*.mp4
+frontend/public/*.avi

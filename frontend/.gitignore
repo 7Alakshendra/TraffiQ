@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+annotated.mp4
+cv/output/
+frontend/public/*.mp4
