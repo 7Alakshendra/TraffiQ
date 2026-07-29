@@ -6,13 +6,17 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from cv.model import process_video, check_alert
+from cv.emergency import get_attention_status
 
 cached_result = None
+cached_emergency = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global cached_result
-    densities = process_video("cv/test_data/traffic_video.mp4")
+    global cached_result, cached_emergency
+    
+    # CV analysis
+    densities = process_video("cv/test_data/video.mp4")
     alert = check_alert(densities)
     dominant = max(set(densities), key=densities.count) if densities else "Unknown"
     cached_result = {
@@ -23,6 +27,10 @@ async def lifespan(app: FastAPI):
         "moderate_count": densities.count("Moderate"),
         "low_count": densities.count("Light")
     }
+    
+    # Emergency detection
+    cached_emergency = get_attention_status("cv/test_data/video.mp4")
+    
     yield
 
 app = FastAPI(lifespan=lifespan)
@@ -54,3 +62,7 @@ def predict(route: str, departure: str):
 @app.get("/analyze-frame")
 def analyze_frame():
     return cached_result
+
+@app.get("/emergency-status")
+def emergency_status():
+    return cached_emergency

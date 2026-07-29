@@ -11,6 +11,14 @@ function CameraMonitor() {
       .then(data => setCvResult(data)) // store in state
   }, [])
 
+  const [emergency, setEmergency] = useState(null)
+
+  useEffect(() => {
+    fetch("http://localhost:8000/emergency-status")
+      .then(res => res.json())
+      .then(data => setEmergency(data))
+}, [])
+
 const corridors = [
     { name: "Silk Board", status: "High", congestion: 78, speed: 12 },
     { name: "MG Road", status: "Moderate", congestion: 45, speed: 22 },
@@ -25,7 +33,15 @@ const corridors = [
 
     <div className="grid grid-cols-2 gap-4 mt-6">
   {corridors.map((corridor) => (
-    <div key={corridor.name} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+    <div key={corridor.name} className={`bg-gray-800 rounded-lg p-4 border ${
+  emergency?.attention_required 
+    ? "border-red-500 animate-pulse" 
+    : "border-gray-700"
+}`}>
+  
+  {emergency?.attention_required && (
+  <p className="text-red-400 text-sm font-bold mt-2">⚠ {emergency.message}</p>
+)}
       
       {/* Location name */}
       <p className="text-white font-semibold mb-2">{corridor.name}</p>
