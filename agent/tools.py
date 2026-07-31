@@ -8,6 +8,14 @@ from cv.model import process_video,check_alert
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+def get_cv_status():
+    try:
+        cv = requests.get("http://localhost:8000/analyze-frame").json()
+        emergency = requests.get("http://localhost:8000/emergency-status").json()
+        return cv, emergency
+    except:
+        return None, None
+
 
 def get_corridor_density(corridor_name:str):
     """Get real-time traffic density for a specific Bengaluru corridor.
@@ -16,7 +24,8 @@ def get_corridor_density(corridor_name:str):
     or when investigating why a particular road is congested."""
 
     corridor = next((c for c in CORRIDORS if c["name"] == corridor_name), None)
-    
+
+    cv, emergency = get_cv_status()
     if corridor is None:
         return {"error": f"Corridor {corridor_name} not found"}
     
@@ -37,12 +46,15 @@ def get_corridor_density(corridor_name:str):
         status = "High"
     
     return {
-        "name": corridor_name,
-        "current_speed": current_speed,
-        "free_flow_speed": free_flow_speed,
-        "congestion": congestion,
-        "status": status
-    }
+    "name": corridor_name,
+    "current_speed": current_speed,
+    "free_flow_speed": free_flow_speed,
+    "congestion": congestion,
+    "status": status,
+    "cv_density": cv["density"] if cv else "Unknown",
+    "emergency_detected": emergency["attention_required"] if emergency else False,
+    "emergency_message": emergency["message"] if emergency else "Unknown"
+}
 
 def get_all_corridors():
     """Get real-time traffic conditions for all 5 Bengaluru corridors simultaneously.
