@@ -1,12 +1,31 @@
-function Dashboard() {
+import { useState, useEffect } from "react"
 
-  const corridors = [
-    { name: "Silk Board", status: "High", congestion: 78, speed: 12 },
-    { name: "MG Road", status: "Moderate", congestion: 45, speed: 22 },
-    { name: "Hebbal Flyover", status: "Low", congestion: 18, speed: 38 },
-    { name: "Marathalli Brg", status: "Moderate", congestion: 52, speed: 19 },
-    { name: "Tin Factory", status: "High", congestion: 81, speed: 9 },
-  ]
+function Dashboard() {
+  const [corridors, setCorridors] = useState([])
+  const [lastUpdated, setLastUpdated] = useState("")
+
+  useEffect(() => {
+    // fetch immediately on load
+    const fetchData = () => {
+        fetch("http://localhost:8000/corridors")
+          .then(res => res.json())
+          .then(data => {
+            setCorridors(data)
+            setLastUpdated(new Date().toLocaleTimeString())
+          })
+    }
+    
+    fetchData()  // run immediately
+    
+    // then run every 30 seconds
+    const interval = setInterval(fetchData, 30000)
+    
+    // cleanup when component unmounts
+    return () => clearInterval(interval)
+}, [])
+
+  const highCount = corridors.filter(c => c.status === "High").length
+  const normalCount = corridors.filter(c => c.status !== "High").length
 
   const alerts = [
     { corridor: "Silk Board", status: "High", time: "10:45 AM" },
@@ -22,7 +41,7 @@ function Dashboard() {
       {/* Page header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-white text-2xl font-bold">Overview</h1>
-        <p className="text-gray-400 text-sm">Last updated: 10:45 AM</p>
+        <p className="text-gray-400 text-sm">Last updated: {lastUpdated}</p>
       </div>
 
       {/* Stat boxes */}
@@ -33,11 +52,11 @@ function Dashboard() {
         </div>
         <div className="bg-gray-800 rounded-lg p-4 border border-red-900">
           <p className="text-gray-400 text-sm">High Alert</p>
-          <p className="text-red-400 text-3xl font-bold mt-1">2</p>
+          <p className="text-red-400 text-3xl font-bold mt-1">{highCount}</p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4 border border-green-900">
           <p className="text-gray-400 text-sm">Normal</p>
-          <p className="text-green-400 text-3xl font-bold mt-1">3</p>
+          <p className="text-green-400 text-3xl font-bold mt-1">{normalCount}</p>
         </div>
       </div>
 
@@ -48,7 +67,7 @@ function Dashboard() {
           <div key={corridor.name} className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex justify-between items-center">
             <p className="text-white font-semibold w-40">{corridor.name}</p>
             <p className="text-gray-400">{corridor.congestion}% congestion</p>
-            <p className="text-gray-400">{corridor.speed} kmph</p>
+            <p className="text-gray-400">{corridor.current_speed} kmph</p>
             <p className={
               corridor.status === "High" ? "text-red-400 font-semibold" :
               corridor.status === "Moderate" ? "text-yellow-400 font-semibold" :
@@ -85,7 +104,7 @@ function Dashboard() {
 
         {/* Agent recommendation */}
         <div className="bg-gray-800 rounded-lg p-4 border border-blue-900">
-          <h2 className="text-white font-semibold mb-4"> Agent Recommendation</h2>
+          <h2 className="text-white font-semibold mb-4">🤖 Agent Recommendation</h2>
           <p className="text-gray-300 text-sm leading-relaxed">{agentRecommendation}</p>
         </div>
 

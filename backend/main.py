@@ -7,6 +7,8 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from cv.model import process_video, check_alert
 from cv.emergency import get_attention_status
+from collector.collect import get_traffic_data
+from collector.config import CORRIDORS
 
 cached_result = None
 cached_emergency = None
@@ -66,3 +68,29 @@ def analyze_frame():
 @app.get("/emergency-status")
 def emergency_status():
     return cached_emergency
+
+@app.get("/corridors")
+def get_corridors():
+    results = []
+    for corridor in CORRIDORS:
+        data = get_traffic_data(corridor["lat"], corridor["lon"])
+        segment = data["flowSegmentData"]
+        current_speed = segment["currentSpeed"]
+        free_flow_speed = segment["freeFlowSpeed"]
+        congestion = round((1 - current_speed / free_flow_speed) * 100, 2)
+        
+        if congestion < 33:
+            status = "Low"
+        elif congestion <= 66:
+            status = "Moderate"
+        else:
+            status = "High"
+        
+        results.append({
+            "name": corridor["name"],
+            "current_speed": current_speed,
+            "free_flow_speed": free_flow_speed,
+            "congestion": congestion,
+            "status": status
+        })
+    return results
